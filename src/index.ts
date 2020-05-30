@@ -1,13 +1,14 @@
 import "reflect-metadata";
-import {createConnection} from "typeorm";
-import {User} from "./entity/User";
+import { createConnection } from "typeorm";
+import { User } from "./entity/User";
+import { Photo } from "./entity/Photos";
 
 createConnection().then(async connection => {
 
     console.log("Inserting a new user into the database...");
     const user = new User();
-    user.firstName = "Timber";
-    user.lastName = "Saw";
+    user.firstName = "Wilman";
+    user.lastName = "Sirit";
     user.age = 25;
     await connection.manager.save(user);
     console.log("Saved a new user with id: " + user.id);
@@ -16,6 +17,24 @@ createConnection().then(async connection => {
     const users = await connection.manager.find(User);
     console.log("Loaded users: ", users);
 
-    console.log("Here you can setup and run express/koa/any other framework.");
+    // console.log("Here you can setup and run express/koa/any other framework.");
+
+
+    // New Photo
+    console.log("Inserting a new photo...");
+    const photo = new Photo();
+    photo.name = "SpaceX";
+    photo.description = "The Dragon has arrived...";
+    photo.filename = "https://i.insider.com/5e220ea524306a016e4f2012?width=1100&format=jpeg&auto=webp";
+    photo.views = 0;
+    photo.isPublished = true;
+
+    await connection.manager.save(photo);
+
+    console.log(`The ${photo.name} photo was inserted with success..!`);
+    const photos = await connection.manager.find(Photo)
+    console.log("Loaded photos: ", photos);
+
 
 }).catch(error => console.log(error));
+
